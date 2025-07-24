@@ -124,15 +124,15 @@ public class ChatHandler {
         replacements.add(Tuple.of("epoch", String.valueOf(epochHelper.getEpochSecond())));
         replacements.add(Tuple.of("time", getTimeString()));
         replacements.add(Tuple.of("plugin-prefix", config.get(ConfigKey.PLUGIN_PREFIX).asString()));
+        String minecraftMessage = replacePrefixSuffix(minecraftConfigString, playerUUID, aliasedServerName, serverName);
+        String discordMessage = replacePrefixSuffix(discordConfigString, playerUUID, aliasedServerName, serverName);
+        String discordEmbedTitle = replacePrefixSuffix(config.get(ConfigKey.MINECRAFT_DISCORD_EMBED_TITLE).asString(), chatMessageData.getPlayerUUID(), aliasedServerName, chatMessageData.getServername());
 
-        String minecraftMessage = Helper.replaceKeys(minecraftConfigString, replacements);
-        String discordMessage = Helper.replaceKeys(discordConfigString, replacements);
-        String discordEmbedTitle = Helper.replaceKeys(config.get(ConfigKey.MINECRAFT_DISCORD_EMBED_TITLE).asString(), replacements);
+        minecraftMessage = Helper.replaceKeys(minecraftMessage, replacements);
+        discordMessage = Helper.replaceKeys(discordMessage, replacements);
+        discordEmbedTitle = Helper.replaceKeys(discordEmbedTitle, replacements);
         String discordEmbedMessage = Helper.replaceKeys(config.get(ConfigKey.MINECRAFT_DISCORD_EMBED_MESSAGE).asString(), replacements);
 
-        minecraftMessage = replacePrefixSuffix(minecraftMessage, playerUUID, aliasedServerName, serverName);
-        discordMessage = replacePrefixSuffix(discordMessage, playerUUID, aliasedServerName, serverName);
-        discordEmbedTitle = replacePrefixSuffix(discordEmbedTitle, chatMessageData.getPlayerUUID(), aliasedServerName, chatMessageData.getServername());
 
         if (config.get(ConfigKey.USE_HELPER).asBoolean()) {
             chatMessageData.setMinecraftMessage(minecraftMessage);
